@@ -1,23 +1,21 @@
-
-import pytest
 import allure
 from pages.main_page import MainPage
+from urls import Urls
 
-@pytest.mark.usefixtures("driver_init")
 @allure.feature("Навигация")
 class TestNavigation:
 
     @allure.story("Переход по клику на Конструктор")
-    def test_click_constructor(self):
-        main = MainPage(self.driver)
+    def test_click_constructor(self, driver):
+        main = MainPage(driver)
         main.open_main()
         main.click_order_feed()  # Сначала перейти на ленту заказов
         main.click_constructor()  # Затем на конструктор
-        assert "construct" in self.driver.current_url or "burger" in self.driver.current_url
+        assert driver.current_url == Urls.BASE_URL
 
     @allure.story("Переход по клику на раздел Лента заказов")
-    def test_click_order_feed(self):
-        main = MainPage(self.driver)
+    def test_click_order_feed(self, driver):
+        main = MainPage(driver)
         main.open_main()
         main.click_order_feed()
-        assert "feed" in self.driver.current_url
+        assert driver.current_url == Urls.BASE_URL + Urls.ORDER_FEED_PATH

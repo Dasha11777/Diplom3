@@ -1,16 +1,14 @@
-
 import pytest
 import allure
 from pages.main_page import MainPage
-from pages.order_modal import OrderModal
+from pages.order_modal import OrderModalPage
 
-@pytest.mark.usefixtures("driver_init")
 @allure.feature("Создание заказа")
 class TestOrderCreation:
 
     @allure.story("Увеличивается счётчик ингредиента при добавлении")
-    def test_ingredient_counter_increment(self):
-        main = MainPage(self.driver)
+    def test_ingredient_counter_increment(self, driver):
+        main = MainPage(driver)
         main.open_main()
 
         ingredient_name = "Краторная булка"

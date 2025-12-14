@@ -3,19 +3,18 @@ import pytest
 import allure
 from pages.main_page import MainPage
 from pages.order_feed_page import OrderFeedPage
-from pages.order_modal import OrderModal
+from pages.order_modal import OrderModalPage
 
-@pytest.mark.usefixtures("driver_init")
 @allure.feature("Лента заказов")
 class TestOrderFeed:
 
     @allure.story("Счётчики выполненных заказов увеличиваются после создания заказа")
-    def test_order_counters_increase(self):
-        main = MainPage(self.driver)
+    def test_order_counters_increase(self, driver):
+        main = MainPage(driver)
         main.open_main()
         main.click_order_feed()
 
-        feed = OrderFeedPage(self.driver)
+        feed = OrderFeedPage(driver)
         done_all_time_before = feed.get_done_all_time()
         done_today_before = feed.get_done_today()
 
@@ -36,12 +35,12 @@ class TestOrderFeed:
         assert done_today_after >= done_today_before
 
     @allure.story("Номер нового заказа появляется в разделе В работе")
-    def test_order_number_in_progress(self):
-        main = MainPage(self.driver)
+    def test_order_number_in_progress(self, driver):
+        main = MainPage(driver)
         main.open_main()
         main.click_order_feed()
 
-        feed = OrderFeedPage(self.driver)
+        feed = OrderFeedPage(driver)
         orders_before = feed.get_in_progress_orders_numbers()
 
         main.click_constructor()
