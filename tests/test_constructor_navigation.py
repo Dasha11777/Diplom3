@@ -6,6 +6,7 @@ from urls import Urls
 class TestNavigation:
 
     @allure.story("Переход по клику на Конструктор")
+    @allure.title("Проверка перехода на страницу конструктора по клику на кнопку 'Конструктор'")
     def test_click_constructor(self, driver):
         main = MainPage(driver)
         main.open_main()
@@ -14,6 +15,7 @@ class TestNavigation:
         assert driver.current_url == Urls.BASE_URL
 
     @allure.story("Переход по клику на раздел Лента заказов")
+    @allure.title("Проверка перехода на страницу ленты заказов по клику на кнопку 'Лента заказов'")
     def test_click_order_feed(self, driver):
         main = MainPage(driver)
         main.open_main()

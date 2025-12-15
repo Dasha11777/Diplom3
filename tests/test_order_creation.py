@@ -1,32 +1,35 @@
-import pytest
 import allure
 from pages.main_page import MainPage
-from pages.order_modal import OrderModalPage
+from test_data import IngredientData
 
 @allure.feature("Создание заказа")
 class TestOrderCreation:
 
-    @allure.story("Увеличивается счётчик ингредиента при добавлении")
-    def test_ingredient_counter_increment(self, driver):
+    @allure.story("Увеличивается счётчик булки при добавлении")
+    @allure.title("Проверка увеличения счётчика булки на 2 при добавлении")
+    def test_bun_counter_increment(self, driver):
         main = MainPage(driver)
         main.open_main()
 
-        ingredient_name = "Краторная булка"
+        ingredient_name = IngredientData.CRATER_BUN['name']
         initial_count = main.get_ingredient_counter(ingredient_name)
-        main.click_ingredient(ingredient_name)  # Открываем для наглядности, но для увеличения счётчика нужно Drag&Drop
-        # Заменим эмуляцией клика + проверкой — т.к. Drag&Drop сложен в Selenium
-
-        # Нужно интегрировать action chains drag_and_drop —для упрощения просто проверим счетчик увеличился (эмуляция)
-        # В реальном случае надо использовать ActionChains
-        # Пример:
-        # ingredient_elem = driver.find_element(...)
-        # order_constructor = driver.find_element(...)
-        # ActionChains(driver).drag_and_drop(ingredient_elem, order_constructor).perform()
-
-        # Здесь мы просто ждем, т.к. невозможно драгндроп в коде без UI
-        # Можно использовать JS
-        # Но пока — проверяем что счетчик не стал 0 (или увеличился)
+        
+        main.add_ingredient_to_constructor(ingredient_name)
 
         count_after = main.get_ingredient_counter(ingredient_name)
-        assert count_after >= initial_count, "Счётчик не увеличился"
+        assert count_after == initial_count + 2, f"Счётчик булки должен увеличиться на 2 (было {initial_count}, стало {count_after})"
+
+    @allure.story("Увеличивается счётчик начинки при добавлении")
+    @allure.title("Проверка увеличения счётчика начинки на 1 при добавлении")
+    def test_filling_counter_increment(self, driver):
+        main = MainPage(driver)
+        main.open_main()
+
+        ingredient_name = IngredientData.BEEF_METEORITE['name']
+        initial_count = main.get_ingredient_counter(ingredient_name)
+        
+        main.add_ingredient_to_constructor(ingredient_name)
+
+        count_after = main.get_ingredient_counter(ingredient_name)
+        assert count_after == initial_count + 1, f"Счётчик начинки должен увеличиться на 1 (было {initial_count}, стало {count_after})"
 
